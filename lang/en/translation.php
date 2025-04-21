@@ -125,7 +125,7 @@ return [
     "add_resource"                  => "Add :Resource",
     "delete_resource"               => "Delete :Resource",
     "resource_list"                 => ":Resource List",
-    "resource_info"                 => ":Resource Inforamtion",
+    "resource_info"                 => ":Resource Information",
     "resource_id"                   => ":Resource ID",
     "resource_report"               => ":Resource Report",
     "yes"                           => "Yes",

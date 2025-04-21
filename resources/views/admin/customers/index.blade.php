@@ -21,31 +21,38 @@
       Customers List
     @endslot
   @endcomponent
+  @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+  @endif
 
   <div class="row">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
           <table id="datatable" class="table-hover table-bordered nowrap w-100 table">
+            <h5>Daftar Pengguna</h5>
             <thead class="table-light">
               <tr>
                 <th>#</th>
-                <th>Name</th>
+                <th>Nama</th>
                 <th>Email</th>
-                <th>Phone</th>
-                <th>No Of Tickets</th>
-                <th> @lang('translation.created_at')</th>
-                <th> @lang('translation.actions')</th>
+                <th>Telepon</th>
+                <th>Tiket</th>
+                <th>Dibuat Pada</th>
+                <th>Status</th>
+                <th>Aksi</th>
               </tr>
             </thead>
             <tbody></tbody>
           </table>
-
         </div>
       </div>
     </div> <!-- end col -->
   </div> <!-- end row -->
 @endsection
+
 @section('script')
   <!-- Required datatable js -->
   <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
@@ -63,11 +70,10 @@
         order: [
           [0, "desc"]
         ],
-        // text transalations
         language: {
-          search: "@lang('translation.search')",
-          lengthMenu: "@lang('translation.lengthMenu1') _MENU_ @lang('translation.lengthMenu2')",
-          processing: "@lang('translation.processing')",
+          search: "Cari nama:",
+          lengthMenu: "Menampilkan _MENU_ data",
+          processing: "Memuat...",
           info: "@lang('translation.infoShowing') _START_ @lang('translation.infoTo') _END_ @lang('translation.infoOf') _TOTAL_ @lang('translation.infoEntries')",
           emptyTable: "@lang('translation.emptyTable')",
           paginate: {
@@ -77,36 +83,27 @@
             "previous": "@lang('translation.paginatePrevious')"
           },
         },
-        ajax: "{{ route('customers.index') }}",
-
-        columns: [{
-            data: 'id'
-          },
+        ajax: {
+            url: "{{ route('customers.index') }}",
+            data: function(d) {}
+        },
+        columns: [
+          { data: 'id' },
+          { data: 'name' },
+          { data: 'email' },
+          { data: 'phone', orderable: false },
+          { data: 'tickets_count', searchable: false },
+          { data: 'created_at' },
           {
-            data: 'name'
+            data: 'is_accepted',
+            render: function(data) {
+              return data == 1 ? '<span class="badge bg-success">Terverikasi</span>' : '<span class="badge bg-danger">Belum Terverikasi</span>';
+            }
           },
-          {
-            data: 'email'
-          },
-          {
-            data: 'phone'
-          },
-          {
-            data: 'tickets_count',
-            searchable: false,
-          },
-          {
-            data: 'created_at',
-          },
-          {
-            data: 'action',
-            orderable: false,
-            searchable: false
-          },
+          { data: 'action', orderable: false, searchable: false }
         ],
-      })
+      });
 
-      //init buttons
       new $.fn.dataTable.Buttons(table, {
         buttons: [{
           extend: 'colvis',
@@ -114,15 +111,10 @@
         }]
       });
 
-      //add buttons to action_btns
-      table.buttons().container()
-        .prependTo($('#action_btns'));
-
-      // select dropdown for change the page length
+      table.buttons().container().prependTo($('#action_btns'));
       $('.dataTables_length select').addClass('form-select form-select-sm');
-
-      // add margin top to the pagination and info 
       $('.dataTables_info, .dataTables_paginate').addClass('mt-3');
     });
   </script>
 @endsection
+

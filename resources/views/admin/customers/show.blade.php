@@ -23,56 +23,136 @@
       @lang('translation.resource_info', ['resource' => __('attributes.customer')])
     @endslot
   @endcomponent
+  @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+  @endif
 
   <div class="row">
-    <div class="col-lg-12">
+    <div class="">
       <div class="card">
         <div class="card-body">
-          <div class="row">
+          <h4 class="card-title mb-4">Informasi Pengguna</h4>
 
-            <div class="col-xl-6">
-              <div class="mt-5">
-                <div class="table-responsive">
-                  <table class="table-borderless mb-0 table">
-                    <tbody>
-                      <tr>
-                        <th scope="row" style="width: 400px;">Name</th>
-                        <td>{{ $user->name }}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style="width: 400px;">Email</th>
-                        <td>{{ $user->email }}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style="width: 400px;">Phone</th>
-                        <td>{{ $user->phone }}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style="width: 400px;">Address</th>
-                        <td>{{ $user->address }}</td>
-                      </tr>
-
-                      <tr>
-                        <th scope="row" style="width: 400px;">No Of Tickets</th>
-                        <td>
-                          <span class="badge badge-pill badge-soft-info font-size-14">{{ $user->tickets()->count() }}</span>
-                        </td>
-                      </tr>
-
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+          <div class="mb-3">
+            <h6 class="fw-semibold mb-1">Nama</h6>
+            <p class="text-muted">{{ $user->name }}</p>
           </div>
-          <!-- end row -->
 
+          <div class="mb-3">
+            <h6 class="fw-semibold mb-1">Email</h6>
+            <p class="text-muted">{{ $user->email }}</p>
+          </div>
+
+          <div class="mb-3">
+            <h6 class="fw-semibold mb-1">Telepon</h6>
+            <p class="text-muted">{{ $user->phone }}</p>
+          </div>
+
+          <div class="mb-3">
+            <h6 class="fw-semibold mb-1">Alamat</h6>
+            <p class="text-muted">{{ $user->address }}</p>
+          </div>
+
+          <div class="mb-3">
+            <h6 class="fw-semibold mb-1">Jumlah Tiket</h6>
+            <span class="badge bg-info text-dark fs-6">
+              {{ $user->tickets()->count() }}
+            </span>
+          </div>
+          @if ($user->is_accepted)
+            {{-- Jika user sudah terverifikasi --}}
+            
+            {{-- Tombol Batalkan Verifikasi --}}
+            <form action="{{ route('customers.unverify', $user->id) }}" method="POST" class="d-inline">
+              @csrf
+              <button type="submit" class="btn btn-warning">Batalkan Verifikasi Akun</button>
+            </form>
+
+            {{-- Toggle Staff --}}
+            @if ($user->is_staff)
+              <form action="{{ route('customers.toggleStaff', $user->id) }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-danger">Jadikan Sebagai Pengguna</button>
+              </form>
+            @else
+              <form action="{{ route('customers.toggleStaff', $user->id) }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-primary">Jadikan Sebagai Staff</button>
+              </form>
+            @endif
+
+          @else
+            {{-- Jika user belum terverifikasi --}}
+            <form action="{{ route('customers.verify', $user->id) }}" method="POST" class="d-inline">
+              @csrf
+              <button type="submit" class="btn btn-success">Verifikasi User</button>
+            </form>
+          @endif
+          
         </div>
       </div>
-      <!-- end card -->
     </div>
   </div>
-  <!-- end row -->
+
+  {{-- role management --}}
+  @if ($user->is_staff)
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between">
+        </div>
+        <div class="card-body">
+        <h5>Role Staff</h5>
+          <table id="roles-table" class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nama Role</th>
+                <th>Permissions</th>
+                <th>Dibuat</th>
+                <th>Aktifkan Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($roles as $index => $role)
+                <tr>
+                  <td>{{ $role->id }}</td>
+                  <td>{{ $role->name }}</td>
+                  <td>
+                  @foreach ($role->permissions as $permission)
+                    @php
+                        $color = $colorMap[$permission->permission_name] ?? 'secondary';
+                    @endphp
+                      <span class="badge bg-{{ $color }}">{{ $permission->permission_name }}</span>
+                  @endforeach
+                  </td>
+                  <td>{{ $role->created_at->format('d M Y') }}</td>
+                  <td>
+                    <form action="{{ route('customers.toggle-role', $user->id) }}" method="POST">
+                      @csrf
+                      <input type="hidden" name="role_id" value="{{ $role->id }}">
+                      <div class="form-check form-switch">
+                          <input 
+                              class="form-check-input" 
+                              type="checkbox" 
+                              onchange="this.form.submit()"
+                              {{ in_array($role->id, $userRoles) ? 'checked' : '' }}
+                          >
+                      </div>
+                    </form>
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  @endif
+
 
   {{-- show  user tickets --}}
   <div class="row">
@@ -100,6 +180,7 @@
       </div>
     </div> <!-- end col -->
   </div> <!-- end row -->
+
 @endsection
 @section('script')
   <!-- Magnific Popup-->

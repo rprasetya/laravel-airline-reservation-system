@@ -56,7 +56,7 @@ var third_party_assets = {
         { "name": "bootstrap-timepicker", "assets": ["./node_modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css", "./node_modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js"] },
         { "name": "tui-calendar", "assets": ["./node_modules/tui-calendar/dist/tui-calendar.min.js", "./node_modules/tui-calendar/dist/tui-calendar.min.css"] },
         { "name": "tui-chart", "assets": ["./node_modules/tui-chart/dist/tui-chart-all.min.js", "./node_modules/tui-chart/dist/maps/usa.js", "./node_modules/tui-chart/dist/tui-chart.min.css"] },
-        { "name": "tui-code-snippet", "assets": ["./node_modules/tui-code-snippet/dist/tui-code-snippet.min.js"] },
+        { "name": "tui-code-snippet", "assets": ["./node_modules/tui-code-snippet/dist/tui-code-snippet.js"] },
         { "name": "tui-date-picker", "assets": ["./node_modules/tui-date-picker/dist/tui-date-picker.min.js", "./node_modules/tui-date-picker/dist/tui-date-picker.min.css"] },
         { "name": "tui-dom", "assets": ["./node_modules/tui-dom/dist/tui-dom.min.js"] },
         { "name": "tui-time-picker", "assets": ["./node_modules/tui-time-picker/dist/tui-time-picker.min.js", "./node_modules/tui-time-picker/dist/tui-time-picker.min.css"] },
@@ -120,34 +120,28 @@ var third_party_assets = {
 };
 
 //copying third party assets
-lodash(third_party_assets).forEach(function(assets, type) {
-    if (type == "css_js") {
-        lodash(assets).forEach(function(plugin) {
-            var name = plugin['name'],
-                assetlist = plugin['assets'],
-                css = [],
-                js = [];
-            lodash(assetlist).forEach(function(asset) {
-                var ass = asset.split(',');
-                for (let i = 0; i < ass.length; ++i) {
-                    if (ass[i].substr(ass[i].length - 3) == ".js") {
-                        js.push(ass[i]);
-                    } else {
-                        css.push(ass[i]);
-                    }
-                };
-            });
-            if (js.length > 0) {
-                mix.combine(js, folder.dist_assets + "/libs/" + name + "/" + name + ".min.js");
-            }
-            if (css.length > 0) {
-                mix.combine(css, folder.dist_assets + "/libs/" + name + "/" + name + ".min.css");
-            }
-        });
+lodash(third_party_assets.css_js).forEach(plugin => {
+    const name = plugin.name;
+    const js = [];
+    const css = [];
+
+    plugin.assets.forEach(asset => {
+        if (asset.endsWith(".js")) {
+            js.push(asset);
+        } else if (asset.endsWith(".css")) {
+            css.push(asset);
+        }
+    });
+
+    if (js.length) {
+        mix.combine(js, `${folder.dist_assets}libs/${name}/${name}.min.js`);
+    }
+    if (css.length) {
+        mix.combine(css, `${folder.dist_assets}libs/${name}/${name}.min.css`);
     }
 });
 
-mix.copyDirectory("./node_modules/tinymce", folder.dist_assets + "/libs/tinymce");
+// mix.copyDirectory("./node_modules/tinymce", folder.dist_assets + "/libs/tinymce");
 mix.copyDirectory("./node_modules/leaflet/dist/images", folder.dist_assets + "/libs/leaflet/images");
 mix.copyDirectory("./node_modules/bootstrap-editable/img", folder.dist_assets + "/libs/img");
 
@@ -243,8 +237,8 @@ lodash(app_pages_assets).forEach(function(assets, type) {
 
 mix.combine('resources/css/main.css', folder.dist_assets + "css/main.css");
 mix.combine('resources/js/main.js', folder.dist_assets + "js/main.js");
-mix.combine('resources/js/app.js', folder.dist_assets + "js/app.min.js");
+mix.combine('resources/js/app.min.js', folder.dist_assets + "js/app.min.js");
 mix.combine('resources/js/pages/calendars.js', folder.dist_assets + "js/pages/calendars.js");
 mix.combine('resources/js/pages/schedules.js', folder.dist_assets + "js/pages/schedules.js");
 mix.combine('resources/js/pages/leaflet-us-states.js', folder.dist_assets + "js/pages/leaflet-us-states.js");
-mix.combine('resources/js/TrackingMap.js', folder.dist_assets + "js/TrackingMap.js");
+// mix.combine('resources/js/TrackingMap.js', folder.dist_assets + "js/TrackingMap.js");

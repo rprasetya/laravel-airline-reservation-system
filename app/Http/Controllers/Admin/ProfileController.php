@@ -15,7 +15,16 @@ class ProfileController extends Controller
 {
     public function profile()
     {
-        return view('admin.profile.index');
+        $user = auth()->user();
+        $data = [
+            'is_staff' => $user->is_staff,
+            'is_admin' => $user->is_admin,
+            'permissions' => $user->getAllPermissions(), // sesuai method sebelumnya
+        ];
+
+        // $lastFlights = Flight::latest()->take(5)->get();
+
+        return view('admin.profile.index', compact('data'));
     }
 
     public function updateProfile(Request $request)

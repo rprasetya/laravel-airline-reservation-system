@@ -32,7 +32,7 @@ h3 {
   line-height: 125%;
 }
 
-nav {
+/* nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -40,7 +40,7 @@ nav {
 nav svg {
   cursor: pointer;
   z-index: 10;
-}
+} */
 
 .links {
   z-index: 9;
@@ -76,19 +76,19 @@ nav svg {
   width: 15rem;
 }
 
-.primary-overlay {
+/* .primary-overlay {
   position: absolute;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
-}
+} */
 
-.front-page {
+/* .front-page {
   min-height: 100vh;
   color: white;
-}
+} */
 .selling-point {
   margin-top: 25vh;
   font-family: 'argonite', sans-serif;
@@ -98,6 +98,30 @@ nav svg {
 .selling-point h3 {
   font-family: sans-serif;
   text-shadow: 0px 4px 12px rgba(0, 0, 0, 0.49);
+}
+
+.h-fit{
+  height: fit-content;
+}
+
+#navbar {
+  background-color: transparent;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  color: white;
+}
+
+#navbar.scrolled {
+  background-color: #212529;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#navbar .navigation {
+  color: white;
+  transition: color 0.3s ease;
+}
+
+#navbar.scrolled a {
+  color: white !important;
 }
 
 .ctas {
@@ -197,7 +221,7 @@ footer {
 
 @media screen and (min-width: 768px) {
   .conatiner {
-    padding: 0% 10%;
+    /* padding: 0% 10%; */
   }
   .videos {
     display: flex;

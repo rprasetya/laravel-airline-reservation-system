@@ -55,9 +55,60 @@ class User extends Authenticatable implements HasMedia
     }
 
     // Relations
+    public function hasRole($role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
 
     public function tickets()
     {
         return $this->hasMany(Ticket::class, 'user_id');
     }
+
+    public function tenants()
+    {
+        return $this->belongsToMany(Tenant::class);
+    }
+
+    public function licenses()
+    {
+        return $this->belongsToMany(License::class)
+                    ->withTimestamps();
+    }
+    
+    public function ads()
+    {
+        return $this->belongsToMany(Ad::class)
+                    ->withTimestamps();
+    }
+    
+    public function submissionDocuments()
+    {
+        return $this->belongsToMany(SubmissionDocument::class)
+                    ->withPivot('tenant_id', 'file_path')
+                    ->withTimestamps();
+    }
+
+    // Roles and Permissions
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_user');
+    }
+
+    public function getAllPermissions()
+    {
+        return $this->roles()->with('permissions')->get()
+            ->flatMap(function ($role) {
+                return $role->permissions;
+            })
+            ->unique('id');
+    }
+
+    public function hasPermission($permissionName)
+    {
+        return $this->getAllPermissions()
+            ->pluck('permission_name')
+            ->contains($permissionName);
+    }
+    
 }

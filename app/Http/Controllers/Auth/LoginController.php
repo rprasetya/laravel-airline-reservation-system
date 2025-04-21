@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -29,15 +31,83 @@ class LoginController extends Controller
      */
     // protected $redirectTo = RouteServiceProvider::HOME;
 
+    // public function redirectTo()
+    // {
+    //     if (Auth::user()->is_admin) {
+    //         return route('root');
+    //     } 
+    //     else if (Auth::user()->is_accepted){
+    //         return route('profile');
+    //     } else {
+    //         Auth::logout();
+    //         return redirect()->back()->withErrors([
+    //             'unverified' => 'Akun Anda belum disetujui. Silakan hubungi admin.',
+    //         ]);        
+    //     }
+    // }
     public function redirectTo()
     {
-        if (Auth::user()->is_admin) {
-            return route('root');
-        } else {
-            return route('profile');
-        }
+        return Auth::user()->is_admin ? route('root') : route('profile');
     }
 
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials, $request->filled('remember'))) {
+            $user = Auth::user();
+
+            if (!$user->is_accepted) {
+                Auth::logout();
+                return redirect()->back()->withErrors([
+                    'unverified' => 'Akun Anda belum disetujui. Silakan hubungi admin.',
+                ]);
+            }
+
+            // Sudah disetujui, lanjut redirect
+            return redirect()->intended($this->redirectPath());
+        }
+
+        // Kalau gagal login karena email/password salah
+        throw ValidationException::withMessages([
+            'credentials' => ['Email atau password salah'],
+        ]);
+    }
+    // public function redirectTo(Request $request)
+    // {
+    //     $credentials = $request->only('email', 'password');
+
+    //     if (Auth::attempt($credentials)) {
+    //         $user = Auth::user();
+
+    //         if (!$user->is_accepted) {
+    //             Auth::logout();
+    //             return redirect()->back()->withErrors([
+    //                 'unverified' => 'Akun Anda belum disetujui. Silakan hubungi admin.',
+    //             ]);
+    //         }
+
+    //         // sudah disetujui, boleh lanjut
+    //         return route('profile');;
+    //     }
+    // }
+
+    // public function redirectTo()
+    // {
+    //     $user = Auth::user();
+
+    //     if ($user->hasRole('Admin')) {
+    //         return route('admin.dashboard');
+    //     } elseif ($user->hasRole('Staff')) {
+    //         return route('staff.dashboard');
+    //     } elseif ($user->hasRole('Tenant')) {
+    //         return route('tenant.dashboard');
+    //     }
+
+    //     // Default fallback jika role tidak terdaftar
+    //     return route('profile');
+    // }
+    
     /**
      * Create a new controller instance.
      *

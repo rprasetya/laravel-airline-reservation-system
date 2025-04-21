@@ -26,6 +26,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'is_admin' => true,
+                'is_accepted' => true,
                 "password" => bcrypt("password",)
             ]
         );
@@ -39,6 +40,7 @@ class UserSeeder extends Seeder
                 ],
                 [
                     "is_admin" => 0,
+                    "is_staff" => 0,
                     "name" => $faker->name(),
                     "password" => bcrypt("password"),
                     "address" => $faker->address(),

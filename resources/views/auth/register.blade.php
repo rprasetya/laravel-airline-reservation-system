@@ -29,7 +29,7 @@
               </div>
               <div class="card-body pt-0">
                 <div>
-                  <a href="{{ route('root') }}">
+                  <a href="#">
                     <div class="avatar-md profile-user-wid mb-4">
                       <span class="avatar-title rounded-circle bg-light">
                         <img src="{{ URL::asset('/assets/images/air-plane-icon.jpg') }}" alt="" class="rounded-circle" height="90">
@@ -50,8 +50,8 @@
                   <form class="needs-validation" novalidate method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
-                      <label for="name" class="form-label">Name</label>
-                      <input type="text" class="form-control" id="name" name='name' placeholder="Enter name" value="{{ old('name') }}" required>
+                      <label for="name" class="form-label">Nama</label>
+                      <input type="text" class="form-control" id="name" name='name' placeholder="Masukkan nama" value="{{ old('name') }}" required>
                       <div class="valid-feedback">
                         @lang('validation.good')
                       </div>
@@ -62,7 +62,7 @@
 
                     <div class="mb-3">
                       <label for="email" class="form-label">Email</label>
-                      <input type="email" class="form-control" id="email" name='email' placeholder="Enter email" value="{{ old('email') }}" required>
+                      <input type="email" class="form-control" id="email" name='email' placeholder="Masukkan email" value="{{ old('email') }}" required>
                       <div class="valid-feedback">
                         @lang('validation.good')
                       </div>
@@ -72,8 +72,8 @@
                     </div>
 
                     <div class="mb-3">
-                      <label for="phone" class="form-label">Phone</label>
-                      <input type="tel" class="form-control" id="phone" name='phone' placeholder="Enter phone" value="{{ old('phone') }}" required>
+                      <label for="phone" class="form-label">Telepon</label>
+                      <input type="tel" class="form-control" id="phone" name='phone' placeholder="Masukkan nomor telepon" value="{{ old('phone') }}" required>
                       <div class="valid-feedback">
                         @lang('validation.good')
                       </div>
@@ -83,8 +83,8 @@
                     </div>
 
                     <div class="mb-3">
-                      <label for="address" class="form-label">Address</label>
-                      <input type="text" class="form-control" id="address" name='address' placeholder="Enter address" value="{{ old('address') }}" required>
+                      <label for="address" class="form-label">Alamat</label>
+                      <input type="text" class="form-control" id="address" name='address' placeholder="Masukkan Alamat" value="{{ old('address') }}" required>
                       <div class="valid-feedback">
                         @lang('validation.good')
                       </div>
@@ -94,8 +94,8 @@
                     </div>
 
                     <div class="mb-3">
-                      <label for="password" class="form-label">Password</label>
-                      <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                      <label for="password" class="form-label">Kata Sandi</label>
+                      <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Kata Sandi" required>
                       <div class="valid-feedback">
                         @lang('validation.good')
                       </div>
@@ -105,8 +105,8 @@
                     </div>
 
                     <div class="mb-3">
-                      <label for="password_confirmation" class="form-label">Confirm Password</label>
-                      <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Enter password Again" required>
+                      <label for="password_confirmation" class="form-label">Konfirmasi Kata Sandi</label>
+                      <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Masukkan kata sandi lagi" required>
                       <div class="valid-feedback">
                         @lang('validation.good')
                       </div>
@@ -116,23 +116,23 @@
                     </div>
 
                     <div class="d-grid mt-4">
-                      <button class="btn btn-primary waves-effect waves-light" type="submit">Register</button>
+                      <button class="btn btn-primary waves-effect waves-light" type="submit">Daftar</button>
                     </div>
                   </form>
                 </div>
 
               </div>
             </div>
-            <div class="mt-5 text-center">
+            <div class="mt-3 text-center">
 
               <div>
-                <p>Already have an account ? <a href="{{ route('login') }}" class="fw-medium text-primary">
-                    Login</a> </p>
-                <p>©
+                <p>Sudah punya akun ? <a href="{{ route('login') }}" class="fw-medium text-primary">
+                    Masuk</a> </p>
+                <!-- <p>©
                   <script>
                     document.write(new Date().getFullYear())
                   </script> {{ config('app.name') }} Crafted with <i class="mdi mdi-heart text-danger"></i>
-                </p>
+                </p> -->
               </div>
             </div>
 

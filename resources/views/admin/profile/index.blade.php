@@ -21,7 +21,19 @@
       @lang('translation.user.profile')
     @endslot
   @endcomponent
-
+  @if($data['is_staff'])
+    <h4>Halo Staff! Ini dashboard kamu.</h4>
+    <p>Role Anda: Staff</p>
+    <p>Tugas Anda:</p>
+    <ul>
+        @foreach ($data['permissions'] as $permission)
+          <li>{{ $permission->permission_name }}</li>
+        @endforeach
+    </ul>
+  @elseif($data['is_admin'])
+      <h4>Halo Admin!</h4>
+      {{-- tampilkan data lain untuk admin --}}
+  @endif
   <div class="row">
     <div class="col-xl-12">
       <div class="card overflow-hidden">
