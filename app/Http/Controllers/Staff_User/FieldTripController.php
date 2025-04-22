@@ -38,7 +38,7 @@ class FieldTripController extends Controller
         // Simpan file
         $file = $request->file('documents');
         $filename = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('documents', $filename, 'public');
+        $filePath = $file->storeAs('documents/fieldtrip', $filename, 'public');
 
         // Simpan data license
         $fieldtrip = FieldTrip::create([

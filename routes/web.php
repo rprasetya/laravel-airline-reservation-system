@@ -15,7 +15,7 @@ use App\Http\Controllers\Admin\{
     RoleController,
 };
 use App\Http\Controllers\Staff_User\{
-    BeritaController,
+    NewsController,
     FieldTripController,
     LaporanKeuanganController,
     PengiklananController,
@@ -59,6 +59,7 @@ Route::group(["prefix" => 'dashboard'], function () {
         Route::post('/pengiklanan/store', [PengiklananController::class, 'store'])->name('pengiklanan.store');
         Route::delete('/pengiklanan/{id}', [PengiklananController::class, 'destroy'])->name('pengiklanan.destroy');
         
+        // Pengiklanan User Routes
         Route::get('/fieldtrip', [FieldTripController::class, 'indexUser'])->name('fieldtrip.index');
         Route::get('/fieldtrip/create', [FieldTripController::class, 'create'])->name('fieldtrip.create');
         Route::post('/fieldtrip/store', [FieldTripController::class, 'store'])->name('fieldtrip.store');
@@ -66,7 +67,14 @@ Route::group(["prefix" => 'dashboard'], function () {
 
         Route::middleware(['auth', 'staff'])->group(function () {
             // News Staff Routes
-            Route::get('staff/berita', [BeritaController::class, 'index'])->name('berita.staffIndex');
+            Route::get('staff/berita', [NewsController::class, 'index'])->name('berita.staffIndex');
+            Route::get('staff/berita/create', [NewsController::class, 'create'])->name('berita.create');
+            Route::get('staff/berita/{slug}', [NewsController::class, 'show'])->name('berita.show');
+            Route::post('staff/berita/store', [NewsController::class, 'store'])->name('berita.store');
+            Route::delete('staff/berita/{id}/destroy', [NewsController::class, 'destroy'])->name('berita.destroy');
+            Route::patch('staff/berita/{id}/toggle-headline', [NewsController::class, 'toggleHeadline'])->name('berita.toggleHeadline');
+            Route::patch('staff/berita/{id}/toggle-publish', [NewsController::class, 'togglePublish'])->name('berita.togglePublish');
+            // Route::patch('staff/slider/{id}/toggle-visibility-footer', [NewsController::class, 'toggleVisibilityFooter'])->name('slider.toggleVisibilityFooter');
             
             // Tenant Staff Routes
             Route::get('staff/tenant', [TenantController::class, 'index'])->name('tenant.staffIndex');
@@ -102,12 +110,12 @@ Route::group(["prefix" => 'dashboard'], function () {
             Route::get('staff/slider', [SliderController::class, 'index'])->name('slider.staffIndex');
             Route::get('staff/slider/create', [SliderController::class, 'create'])->name('slider.create');
             Route::post('staff/slider/store', [SliderController::class, 'store'])->name('slider.store');
-            // Route::get('staff/slider/{id}', [SliderController::class, 'show'])->name('slider.show');
-            // Route::patch('staff/slider/{id}/approve', [SliderController::class, 'approve'])->name('slider.approve');
-            // Route::patch('staff/slider/{id}/reject', [SliderController::class, 'reject'])->name('slider.reject');
+            Route::delete('staff/slider/{id}/destroy', [SliderController::class, 'destroy'])->name('slider.destroy');
+            Route::patch('staff/slider/{id}/toggle-visibility-home', [SliderController::class, 'toggleVisibilityHome'])->name('slider.toggleVisibilityHome');
+            Route::patch('staff/slider/{id}/toggle-visibility-footer', [SliderController::class, 'toggleVisibilityFooter'])->name('slider.toggleVisibilityFooter');
             
+            // Report Staff Routes
             Route::get('staff/keuangan', [LaporanKeuanganController::class, 'index'])->name('keuangan.staffIndex');
-            
         });
 
 

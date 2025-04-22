@@ -33,22 +33,6 @@
             </div>
 
             <div class="mb-3">
-              <label for="slider_type" class="form-label">Jenis slider</label>
-              <input type="text" class="form-control" id="slider_type" name="slider_type" value="{{ old('slider_type') }}" required>
-              @error('slider_type')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-              @enderror
-            </div>
-
-            <div class="mb-3">
-              <label for="description" class="form-label">Deskripsi slider</label>
-              <textarea class="form-control" id="description" name="description" rows="4" required>{{ old('description') }}</textarea>
-              @error('description')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-              @enderror
-            </div>
-
-            <div class="mb-3">
               <label for="documents" class="form-label">Foto yang akan ditampilkan</label>
               <input type="file" class="form-control" id="documents" name="documents" required>
               @error('documents')
@@ -59,7 +43,6 @@
             <div class="d-grid">
               <button type="submit" class="btn btn-primary waves-effect waves-light">Ajukan Sekarang</button>
             </div>
-
           </form>
         </div>
       </div>

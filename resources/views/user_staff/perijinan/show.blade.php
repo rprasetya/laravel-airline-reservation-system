@@ -53,7 +53,7 @@
           <div class="mb-3 d-flex flex-column">
             <label class="form-label">Dokumen Terlampir</label>
             @if ($license->documents)
-              <a href="{{ asset('uploads/documents/' . basename($license->documents)) }}" class="btn btn-primary" disabled target="_blank">
+              <a href="{{ asset('uploads/documents/license/' . basename($license->documents)) }}" class="btn btn-primary" disabled target="_blank">
                 Lihat Dokumen
               </a>
             @else

@@ -69,7 +69,7 @@
                                 @if ($license->documents)
                                   <div class="row">
                                     <form class="col">
-                                      <a href="{{ asset('uploads/documents/' . basename($license->documents)) }}" class="btn btn-sm btn-primary w-100">Lihat Berkas</a>
+                                      <a href="{{ asset('uploads/documents/license/' . basename($license->documents)) }}" class="btn btn-sm btn-primary w-100">Lihat Berkas</a>
                                     </form>
                                     @if ($license->submission_status == 'diajukan')
                                       <form class="col" action="{{ route('perijinan.destroy', $license->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus pengajuan ini?')">

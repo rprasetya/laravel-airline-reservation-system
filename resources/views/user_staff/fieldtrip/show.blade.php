@@ -53,7 +53,7 @@
           <div class="mb-3 d-flex flex-column">
             <label class="form-label">Dokumen Terlampir</label>
             @if ($fieldtrip->documents)
-              <a href="{{ asset('uploads/documents/' . basename($fieldtrip->documents)) }}" class="btn btn-primary" disabled target="_blank">
+              <a href="{{ asset('uploads/documents/fieldtrip/' . basename($fieldtrip->documents)) }}" class="btn btn-primary" disabled target="_blank">
                 Lihat Dokumen
               </a>
             @else
@@ -77,7 +77,7 @@
           </div>
 
           <div class="d-flex justify-content-between">
-            <a href="{{ route('fieldtrip.index') }}" class="btn btn-secondary">Kembali</a>
+            <a href="{{ route('fieldtrip.staffIndex') }}" class="btn btn-secondary">Kembali</a>
             <div class="d-flex gap-3">
               @if ($fieldtrip->submission_status === 'diajukan')
                 <div class="">

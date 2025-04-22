@@ -68,10 +68,10 @@
                                 @if ($fieldtrip->documents)
                                   <div class="row">
                                     <form class="col">
-                                      <a href="{{ asset('uploads/documents/' . basename($fieldtrip->documents)) }}" class="btn btn-sm btn-primary w-100">Lihat Berkas</a>
+                                      <a href="{{ asset('uploads/documents/fieldtrip/' . basename($fieldtrip->documents)) }}" class="btn btn-sm btn-primary w-100">Lihat Berkas</a>
                                     </form>
                                     @if ($fieldtrip->submission_status == 'diajukan')
-                                      <form class="col" action="{{ route('pengiklanan.destroy', $fieldtrip->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus pengajuan ini?')">
+                                      <form class="col" action="{{ route('fieldtrip.destroy', $fieldtrip->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus pengajuan ini?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm w-100">Hapus pengajuan</button>
@@ -85,7 +85,7 @@
                             </tr>
                           @empty
                             <tr>
-                              <td colspan="4" class="text-center">Belum ada pengajuan perizinan usaha</td>
+                              <td colspan="4" class="text-center">Belum ada pengajuan fieldtrip</td>
                             </tr>
                           @endforelse
                         </tbody>

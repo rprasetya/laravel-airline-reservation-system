@@ -38,7 +38,7 @@ class PengiklananController extends Controller
         // Simpan file
         $file = $request->file('documents');
         $filename = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('documents', $filename, 'public');
+        $filePath = $file->storeAs('documents/ads', $filename, 'public');
 
         // Simpan data license
         $ad = Ad::create([
@@ -66,16 +66,12 @@ class PengiklananController extends Controller
     {
         $ad = Ad::findOrFail($id);
 
-        // Hapus file dokumen jika ada
         $documentPath = public_path('uploads/' . $ad->documents);
         if (file_exists($documentPath)) {
             unlink($documentPath);
         }
 
-        // Hapus relasi user jika menggunakan pivot
         $ad->users()->detach();
-
-        // Hapus ad
         $ad->delete();
 
         return redirect()->route('pengiklanan.index')->with('success', 'Pengajuan berhasil dihapus.');    }

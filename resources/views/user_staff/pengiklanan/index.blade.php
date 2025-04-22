@@ -68,7 +68,7 @@
                                 @if ($ad->documents)
                                   <div class="row">
                                     <form class="col">
-                                      <a href="{{ asset('uploads/documents/' . basename($ad->documents)) }}" class="btn btn-sm btn-primary w-100">Lihat Berkas</a>
+                                      <a href="{{ asset('uploads/documents/ads/' . basename($ad->documents)) }}" class="btn btn-sm btn-primary w-100">Lihat Berkas</a>
                                     </form>
                                     @if ($ad->submission_status == 'diajukan')
                                       <form class="col" action="{{ route('pengiklanan.destroy', $ad->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus pengajuan ini?')">
@@ -85,7 +85,7 @@
                             </tr>
                           @empty
                             <tr>
-                              <td colspan="4" class="text-center">Belum ada pengajuan perizinan usaha</td>
+                              <td colspan="4" class="text-center">Belum ada pengajuan pengiklanan</td>
                             </tr>
                           @endforelse
                         </tbody>
@@ -127,7 +127,7 @@
                           </tr>
                         @empty
                           <tr>
-                            <td colspan="4" class="text-center">Belum ada pengajuan perizinan usaha</td>
+                            <td colspan="4" class="text-center">Belum ada pengajuan pengiklanan</td>
                           </tr>
                         @endforelse
                       </tbody>

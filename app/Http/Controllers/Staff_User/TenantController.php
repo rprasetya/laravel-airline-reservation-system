@@ -42,7 +42,7 @@ class TenantController extends Controller
         // Simpan file
         $file = $request->file('documents');
         $filename = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('documents', $filename, 'public');
+        $filePath = $file->storeAs('documents/tenant', $filename, 'public');
 
         // Simpan data tenant
         $tenant = Tenant::create([

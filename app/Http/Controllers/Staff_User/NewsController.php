@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\News;
 
-class LaporanKeuanganController extends Controller
+class NewsController extends Controller
 {
     public function index()
     {
         $news = News::latest()->get();
-        return view('user_staff.keuangan.index', compact('news'));
+        return view('user_staff.berita.index', compact('news'));
     }
     public function show($slug)
     {

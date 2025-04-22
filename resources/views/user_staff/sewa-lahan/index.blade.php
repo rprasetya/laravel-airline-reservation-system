@@ -69,7 +69,7 @@
                                 @if ($rental->documents)
                                   <div class="row">
                                     <form class="col">
-                                      <a href="{{ asset('uploads/documents/' . basename($rental->documents)) }}" class="btn btn-sm btn-primary w-100" target="_blank">Lihat Berkas</a>
+                                      <a href="{{ asset('uploads/documents/rental/' . basename($rental->documents)) }}" class="btn btn-sm btn-primary w-100" target="_blank">Lihat Berkas</a>
                                     </form>
                                     @if ($rental->submission_status == 'diajukan')
                                       <form class="col" action="{{ route('sewa.destroy', $rental->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus pengajuan ini?')">

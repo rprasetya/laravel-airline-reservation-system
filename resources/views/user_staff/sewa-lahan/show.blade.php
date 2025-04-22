@@ -53,8 +53,8 @@
           <div class="mb-3 d-flex flex-column">
             <label class="form-label">Dokumen Terlampir</label>
             @if ($rental->documents)
-              <a href="{{ asset('uploads/documents/' . basename($rental->documents)) }}" class="btn btn-primary" disabled target="_blank">
-                Lihat Dokumenf
+              <a href="{{ asset('uploads/documents/rental/' . basename($rental->documents)) }}" class="btn btn-primary" disabled target="_blank">
+                Lihat Dokumen
               </a>
             @else
               <input type="text" class="form-control" value="Tidak ada dokumen" disabled>
@@ -75,9 +75,6 @@
             @endphp
             <span class="badge {{ $badgeClass }}">{{ ucfirst($status) }}</span>
           </div>
-          
-          
-
           <div class="d-flex justify-content-between">
             <a href="{{ route('sewa.staffIndex') }}" class="btn btn-secondary">Kembali</a>
             <div class="d-flex gap-3">

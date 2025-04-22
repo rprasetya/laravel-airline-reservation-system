@@ -53,7 +53,7 @@
           <div class="mb-3 d-flex flex-column">
             <label class="form-label">Dokumen Terlampir</label>
             @if ($ad->documents)
-              <a href="{{ asset('uploads/documents/' . basename($ad->documents)) }}" class="btn btn-primary" disabled target="_blank">
+              <a href="{{ asset('uploads/documents/ads/' . basename($ad->documents)) }}" class="btn btn-primary" disabled target="_blank">
                 Lihat Dokumen
               </a>
             @else
@@ -77,7 +77,7 @@
           </div>
 
           <div class="d-flex justify-content-between">
-            <a href="{{ route('pengiklanan.index') }}" class="btn btn-secondary">Kembali</a>
+            <a href="{{ route('pengiklanan.staffIndex') }}" class="btn btn-secondary">Kembali</a>
             <div class="d-flex gap-3">
               @if ($ad->submission_status === 'diajukan')
                 <div class="">

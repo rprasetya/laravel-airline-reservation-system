@@ -38,7 +38,7 @@ class SewaLahanController extends Controller
         // Simpan file
         $file = $request->file('documents');
         $filename = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('documents', $filename, 'public');
+        $filePath = $file->storeAs('documents/rental', $filename, 'public');
 
         // Simpan data rental
         $rental = Rental::create([
@@ -54,7 +54,7 @@ class SewaLahanController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('sewa.index')->with('success', 'Pengajuan sewa berhasil dikirim!');
+        return redirect()->route('sewa.index')->with('success', 'Pengajuan sewa lahan berhasil dikirim!');
     }
 
     public function create()

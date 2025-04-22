@@ -38,7 +38,7 @@ class PerijinanUsahaController extends Controller
         // Simpan file
         $file = $request->file('documents');
         $filename = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('documents', $filename, 'public');
+        $filePath = $file->storeAs('documents/license', $filename, 'public');
 
         // Simpan data license
         $license = License::create([

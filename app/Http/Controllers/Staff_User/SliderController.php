@@ -13,20 +13,12 @@ class SliderController extends Controller
     {
         $request->validate([
             'slider_name' => 'required|string|max:255',
-            'description'   => 'required|string',
-            'slider_type'   => 'required|string',
             'documents'     => 'required|file|mimes:jpg,jpeg,png|max:2048',
         ], [
             'slider_name.required' => 'Nama slider wajib diisi.',
             'slider_name.string'   => 'Nama slider harus berupa teks.',
             'slider_name.max'      => 'Nama slider maksimal 255 karakter.',
 
-            'description.required'   => 'Deskripsi slider wajib diisi.',
-            'description.string'     => 'Deskripsi harus berupa teks.',
-            
-            'slider_type.required'   => 'Jenis slider wajib dipilih.',
-            'slider_type.string'     => 'Jenis slider tidak valid.',
-            
             'documents.required'     => 'Dokumen pendukung wajib diunggah.',
             'documents.file'         => 'File dokumen tidak valid.',
             'documents.mimes'        => 'Dokumen harus berupa file dengan format: JPG/PNG',
@@ -37,20 +29,13 @@ class SliderController extends Controller
         // Simpan file
         $file = $request->file('documents');
         $filename = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('documents', $filename, 'public');
+        $filePath = $file->storeAs('documents/slider', $filename, 'public');
+
 
         // Simpan data license
-        $ad = Ad::create([
-            'ad_name' => $request->ad_name,
-            'ad_type'   => $request->ad_type,
-            'description'   => $request->description,
+        $slider = Slider::create([
+            'slider_name' => $request->slider_name,
             'documents'     => $filePath,
-        ]);
-
-        // Simpan ke pivot ad_user
-        $ad->users()->attach(auth()->id(), [
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         return redirect()->route('slider.index')->with('success', 'Pengajuan slider berhasil dikirim!');
@@ -63,50 +48,64 @@ class SliderController extends Controller
 
     public function destroy($id)
     {
-        $ad = Ad::findOrFail($id);
+        $slider = Slider::findOrFail($id);
 
         // Hapus file dokumen jika ada
-        $documentPath = public_path('uploads/' . $ad->documents);
+        $documentPath = public_path('uploads/documents/slider/' . basename($slider->documents));
         if (file_exists($documentPath)) {
             unlink($documentPath);
         }
 
-        // Hapus relasi user jika menggunakan pivot
-        $ad->users()->detach();
+        // Hapus slider
+        $slider->delete();
 
-        // Hapus ad
-        $ad->delete();
+        return redirect()->route('slider.index')->with('success', 'Gambar berhasil dihapus.');    
+    }
 
-        return redirect()->route('slider.index')->with('success', 'Pengajuan berhasil dihapus.');    }
+    public function toggleVisibilityHome(Request $request, $id)
+    {
+        $slider = Slider::findOrFail($id);
+
+        // Hitung jumlah slider yang sudah aktif di footer
+        $activeHomeCount = Slider::where('is_visible_home', 1)->count();
+
+        // Cek apakah ada lebih dari 3 slider yang aktif
+        if ($activeHomeCount >= 3 && !$slider->is_visible_home) {
+            return back()->with('error', 'Hanya 3 slider yang dapat ditampilkan di beranda.');
+        }
+
+        // Update status is_visible_footer
+        $slider->is_visible_home = $request->input('is_visible_home');
+        $slider->save();
+
+        return back()->with('success', 'Status visibilitas home diperbarui.');
+    }
+
+    public function toggleVisibilityFooter(Request $request, $id)
+    {
+        $slider = Slider::findOrFail($id);
+
+        // Hitung jumlah slider yang sudah aktif di footer
+        $activeFooterCount = Slider::where('is_visible_footer', 1)->count();
+
+        // Cek apakah ada lebih dari 3 slider yang aktif
+        if ($activeFooterCount >= 3 && !$slider->is_visible_footer) {
+            return back()->with('error', 'Hanya 3 slider yang dapat ditampilkan di footer.');
+        }
+
+        // Update status is_visible_footer
+        $slider->is_visible_footer = $request->input('is_visible_footer');
+        $slider->save();
+
+        return back()->with('success', 'Status visibilitas footer diperbarui.');
+    }
+
+
 
 
     public function index()
     {
         $sliders = Slider::latest()->get();
         return view('user_staff.slider.index', compact('sliders'));     
-    }
-
-    public function show($id)
-    {
-        $ad = Ad::with('users')->findOrFail($id);
-        return view('user_staff.slider.show', compact('ad'));
-    }
-
-    public function approve($id)
-    {
-        $ad = Ad::findOrFail($id);
-        $ad->submission_status = 'disetujui';
-        $ad->save();
-
-        return redirect()->back()->with('success', 'Pengajuan berhasil disetujui.');
-    }
-
-    public function reject($id)
-    {
-        $ad = Ad::findOrFail($id);
-        $ad->submission_status = 'ditolak';
-        $ad->save();
-
-        return redirect()->back()->with('success', 'Pengajuan berhasil ditolak.');
     }
 }
